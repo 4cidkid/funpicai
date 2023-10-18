@@ -1,0 +1,16 @@
+#generate {
+  width: calc(100% - 10px);
+}
+
+@keyframes tilt {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.tilt {
+  animation: tilt 5s ease-in-out infinite;
+}
