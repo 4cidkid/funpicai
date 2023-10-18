@@ -18,3 +18,28 @@ body {
   color: rgb(var(--foreground-rgb));
 
 }
+
+/* ===== Scrollbar CSS ===== */
+  /* Firefox */
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: #b5b5b5 #4a4a4a;
+  }
+
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 9px;
+
+  }
+
+  *::-webkit-scrollbar-track {
+    background: #4a4a4a;
+
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: #b5b5b5;
+    border-radius: 10px;
+    border: 3px none #ffffff;
+
+  }
