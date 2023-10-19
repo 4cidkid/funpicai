@@ -11,6 +11,11 @@
   }
 }
 
+
 .tilt {
-  animation: tilt 5s ease-in-out infinite;
+  animation: tilt 5s ease-in-out infinite alternate-reverse;
 }
+.tilt-fast{
+  animation: tilt 2s ease-in-out infinite alternate-reverse;
+}
+
