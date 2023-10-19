@@ -1,4 +1,5 @@
 
+"use client";
 import { useState, Fragment, useEffect } from "react";
 import Image from "next/image";
 import { BiBrush } from "react-icons/bi";
