@@ -88,8 +88,8 @@ export default function Generate({ prompts, setPrompts, mode, setMode, currentPr
                             prompts.map((promps, index) => {
                                 return (
 
-                                    <div className={`${promps.response ? "bg-[#444654]" : ""} w-full`}>
-                                        <div key={index} className={`flex items-start gap-4 w-[500px] h-fit py-4 mx-auto`}>
+                                    <div key={index} className={`${promps.response ? "bg-[#444654]" : ""} w-full`}>
+                                        <div  className={`flex items-start gap-4 w-[500px] h-fit py-4 mx-auto`}>
 
                                             <Image className='w-10 h-10 rounded-full' src={`${promps.response ? "/bender.png" : "/calamardo.png"} `} alt='user-icon' />
 
