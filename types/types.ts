@@ -31,3 +31,8 @@ export type CurrentPrompt = {
 export type image = {
     file: File | null, url: string
 }
+export type OptionsModalProps = {
+    showDialog: boolean,
+    setShowDialog: Dispatch<SetStateAction<boolean>>,
+    setPrompts: Dispatch<SetStateAction<Prompts>>,
+}
