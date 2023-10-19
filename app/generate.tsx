@@ -137,7 +137,7 @@ export default function Generate({ prompts, setPrompts, mode, setMode, currentPr
                                 if (e.key === "Enter") {
                                     handlePromptSubmit()
                                 }
-                            }} value={currentPrompt.prompt} type='text' className={`${currentPrompt.active ? "" : "cursor-not-allowed brightness-50"} bg-[#40414f] text-white p-2 rounded-xl shadow-md w-full`} placeholder='Enter a prompt to generate an image' />
+                            }} value={currentPrompt.prompt} type='text' className={`${currentPrompt.active ? "" : "cursor-not-allowed brightness-50"} bg-[#40414f] text-white p-2 rounded-xl shadow-md w-full`} placeholder={`${mode?"Enter a prompt to edit the image":"Enter a prompt to generate an image"}`} />
                             <PiPaperPlaneRightDuotone className={`${currentPrompt.active ? "" : "cursor-not-allowed pointer-events-none"} absolute right-2 top-2/4 -translate-y-2/4 text-gray-300 z-10 cursor-pointer`} onClick={handlePromptSubmit} />
                         </div>
                         <div className="relative">
