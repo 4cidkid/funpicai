@@ -10,6 +10,20 @@ export type GenerateProps = {
     setCurrentPrompt: Dispatch<SetStateAction<CurrentPrompt>>,
     setImage: Dispatch<SetStateAction<image>>,
 }
+export type PrompBarProps = {
+    prompts: Prompts,
+    mode: boolean,
+    setPrompts: Dispatch<SetStateAction<Prompts>>,
+    currentPrompt: CurrentPrompt,
+    setCurrentPrompt: Dispatch<SetStateAction<CurrentPrompt>>,
+    setImage: Dispatch<SetStateAction<image>>,
+    setMode: Dispatch<SetStateAction<boolean>>,
+}
+export type ModeProps = {
+    prompts: Prompts,
+    mode: boolean,
+    setMode: Dispatch<SetStateAction<boolean>>,
+}
 export type CurrentPrompt = {
     prompt: string,
     active: boolean,
