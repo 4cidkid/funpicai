@@ -10,7 +10,7 @@ export default async function generateImage(prompt: string): Promise<{ isOk: boo
     })
   })
   const data = await response.json() ?? null;
-  await promise;
+
   if (!response.ok) {
     if (data && data.error) {
       if (data.error.code === "content_policy_violation") {
@@ -29,4 +29,3 @@ export default async function generateImage(prompt: string): Promise<{ isOk: boo
 }
 
 
-const promise = new Promise((resolve,reject) => setTimeout(() => resolve("done"), 1000));
