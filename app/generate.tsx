@@ -188,7 +188,7 @@ export default function Generate({ prompts, setPrompts, mode, setMode, currentPr
                                                 <button className="px-8 py-2 bg-red-600 font-bold rounded-lg" onClick={() => {
                                                     setPrompts([])
                                                     setShowDialog(false)
-                                                }}>I'm sure</button>
+                                                }}>I&apos;m sure</button>
                                                 <button className="px-8 py-2 bg-[#36373b] border border-[#31323c] shadow-md font-bold rounded-lg" onClick={() => {
                                                     setShowDialog(false)
                                                 }}>Cancel</button>
