@@ -1,5 +1,6 @@
 
-import { useState, Fragment } from "react";
+import { useState, Fragment, useEffect } from "react";
+import Image from "next/image";
 import { BiBrush } from "react-icons/bi";
 import { LuImagePlus } from "react-icons/lu";
 import { PiPaperPlaneRightDuotone } from "react-icons/pi";
@@ -15,6 +16,11 @@ import generateImage from "@/api/generateImage";
 import { Menu, Dialog, Transition } from "@headlessui/react"
 export default function Generate({ prompts, setPrompts, mode, setMode, currentPrompt, setCurrentPrompt, setImage }: GenerateProps): JSX.Element {
     const [showDialog, setShowDialog] = useState<boolean>(false)
+    const [showIndicatorImage, setShowIndicatorImage] = useState<{ active: boolean, stop: boolean }>({
+        active: false,
+        stop: false
+    })
+    useEffect(() => { setShowIndicatorImage({ ...showIndicatorImage, active: mode }) }, [mode])
     const handlePromptSubmit = async () => {
         if (currentPrompt.prompt.length === 0) return toast.error("Please enter a prompt!")
         setPrompts([...prompts, { promp: currentPrompt.prompt, index: prompts.length, response: false, responseImage: null, loadingPropmt: false }])
@@ -84,14 +90,14 @@ export default function Generate({ prompts, setPrompts, mode, setMode, currentPr
                                     <div className={`${promps.response ? "bg-[#444654]" : ""} w-full`}>
                                         <div key={index} className={`flex items-start gap-4 w-[500px] h-fit py-4 mx-auto`}>
 
-                                            <img className='w-10 h-10 rounded-full' src={`${promps.response ? "https://avatars.githubusercontent.com/u/59100281?v=4" : "https://i.ibb.co/DCyLFGS/Captura-de-pantalla-2023-10-18-145501.png"} `} alt='user-icon' />
+                                            <Image className='w-10 h-10 rounded-full' src={`${promps.response ? "/bender.png" : "/calamardo.png"} `} alt='user-icon' />
 
                                             <div className='w-full'>
                                                 <p className={`${promps.loadingPropmt ? styles.tilt : ""} break-words text-slate-200 text-sm leading-8`}>
                                                     {promps.promp}
                                                 </p>
                                                 {
-                                                    promps.responseImage ? <><br></br><img className='w-52 h-52' src={promps.responseImage} alt='response' /> </> : undefined
+                                                    promps.responseImage ? <><br></br><Image className='w-52 h-52' src={promps.responseImage} alt='response' /> </> : undefined
                                                 }
                                             </div>
                                         </div>
@@ -104,13 +110,14 @@ export default function Generate({ prompts, setPrompts, mode, setMode, currentPr
                 </div>
                 <div className=' z-10  absolute bottom-0 py-5 flex items-center justify-center text-white w-full'>
                     <div className='flex items-center justify-center gap-4 w-full'>
-                        <div className='text-2xl text-gray-300 cursor-pointer z-20'>
-                            <LuImagePlus onClick={() => document.getElementById("add-image")?.click()} />
+                        <div className={`${mode ? "cursor-pointer" : "cursor-not-allowed"} text-2xl text-gray-300  z-20 relative`}>
+                            <LuImagePlus className="z-50" onClick={() => mode && document.getElementById("add-image")?.click()} />
                             <input
                                 id='add-image'
                                 type="file"
                                 className="hidden"
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                    setShowIndicatorImage({ active: false, stop: true })
                                     const file: File | null = e.target.files && e.target.files[0] ? e.target.files[0] : null;
                                     if (file) {
                                         const url = URL.createObjectURL(file);
@@ -118,6 +125,9 @@ export default function Generate({ prompts, setPrompts, mode, setMode, currentPr
                                     }
                                 }}
                             />
+                            <Transition onClick={() => mode && document.getElementById("add-image")?.click()} className={"z-10"} show={showIndicatorImage.active && !showIndicatorImage.stop} enter="transition-opacity duration-150" enterFrom="opacity-0" enterTo="opacity-100" leave="transition-opacity duration-150" leaveFrom="opacity-100" leaveTo="opacity-0">
+                                <div className={`${styles["tilt-fast"]} z-10 w-12 h-12 border-green-500 border-2 rounded-full absolute left-2/4 top-2/4 -translate-y-2/4 -translate-x-2/4`}></div>
+                            </Transition>
                         </div>
                         <div className='relative w-full max-w-[500px]'>
                             <input onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
