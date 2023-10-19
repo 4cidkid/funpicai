@@ -21,7 +21,7 @@ export default function Generate({ prompts, setPrompts, mode, setMode, currentPr
         active: false,
         stop: false
     })
-    useEffect(() => { setShowIndicatorImage({ ...showIndicatorImage, active: mode }) }, [mode])
+    useEffect(() => { setShowIndicatorImage({ ...showIndicatorImage, active: mode }) }, [mode,showIndicatorImage])
     const handlePromptSubmit = async () => {
         if (currentPrompt.prompt.length === 0) return toast.error("Please enter a prompt!")
         setPrompts([...prompts, { promp: currentPrompt.prompt, index: prompts.length, response: false, responseImage: null, loadingPropmt: false }])
