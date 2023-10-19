@@ -1,4 +1,5 @@
 
+"use client";
 import { BiBrush } from "react-icons/bi";
 import { LuImagePlus } from "react-icons/lu";
 import { PiPaperPlaneRightDuotone } from "react-icons/pi";
@@ -98,7 +99,7 @@ export default function Generate({ prompts, setPrompts, mode, setMode, currentPr
                         }
                     </div>
                 </div>
-                <div className='z-10 before:w-full before:h-full before:absolute before:bg-black before:blur-xl before:scale-x-150 before:bg-opacity-[50%] before:content-[""] absolute bottom-0 py-5 flex items-center justify-center text-white w-full'>
+                <div className='overflow-hidden z-10  absolute bottom-0 py-5 flex items-center justify-center text-white w-full'>
                     <div className='flex items-center justify-center gap-4 w-full'>
                         <div className='text-2xl text-gray-300 cursor-pointer z-20'>
                             <LuImagePlus onClick={() => document.getElementById("add-image")?.click()} />
@@ -110,7 +111,7 @@ export default function Generate({ prompts, setPrompts, mode, setMode, currentPr
                                     const file: File | null = e.target.files && e.target.files[0] ? e.target.files[0] : null;
                                     if (file) {
                                         const url = URL.createObjectURL(file);
-                                        setImage({ file, url });
+                                        setImage({ file:file, url:url });
                                     }
                                 }}
                             />
