@@ -1,19 +1,20 @@
 
-import { useState } from "react";
+import { useState, Fragment } from "react";
 import { BiBrush } from "react-icons/bi";
 import { LuImagePlus } from "react-icons/lu";
 import { PiPaperPlaneRightDuotone } from "react-icons/pi";
 import { BsThreeDotsVertical, BsFillTrashFill } from "react-icons/bs";
 import { RiAiGenerate } from "react-icons/ri";
 import { HiSwitchHorizontal } from "react-icons/hi"
+import { CgDanger } from "react-icons/cg"
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from "@/modules.css/generate.module.css"
 import type { GenerateProps, Prompts } from "@/types/types";
 import generateImage from "@/api/generateImage";
-import { Menu } from "@headlessui/react"
+import { Menu, Dialog, Transition } from "@headlessui/react"
 export default function Generate({ prompts, setPrompts, mode, setMode, currentPrompt, setCurrentPrompt, setImage }: GenerateProps): JSX.Element {
-    const [showOptions, setShowOptions] = useState<boolean>(false)
+    const [showDialog, setShowDialog] = useState<boolean>(false)
     const handlePromptSubmit = async () => {
         if (currentPrompt.prompt.length === 0) return toast.error("Please enter a prompt!")
         setPrompts([...prompts, { promp: currentPrompt.prompt, index: prompts.length, response: false, responseImage: null, loadingPropmt: false }])
@@ -101,7 +102,7 @@ export default function Generate({ prompts, setPrompts, mode, setMode, currentPr
                         }
                     </div>
                 </div>
-                <div className='overflow-hidden z-10  absolute bottom-0 py-5 flex items-center justify-center text-white w-full'>
+                <div className=' z-10  absolute bottom-0 py-5 flex items-center justify-center text-white w-full'>
                     <div className='flex items-center justify-center gap-4 w-full'>
                         <div className='text-2xl text-gray-300 cursor-pointer z-20'>
                             <LuImagePlus onClick={() => document.getElementById("add-image")?.click()} />
@@ -113,7 +114,7 @@ export default function Generate({ prompts, setPrompts, mode, setMode, currentPr
                                     const file: File | null = e.target.files && e.target.files[0] ? e.target.files[0] : null;
                                     if (file) {
                                         const url = URL.createObjectURL(file);
-                                        setImage({ file:file, url:url });
+                                        setImage({ file: file, url: url });
                                     }
                                 }}
                             />
@@ -131,22 +132,64 @@ export default function Generate({ prompts, setPrompts, mode, setMode, currentPr
                         <div className="relative">
                             <Menu>
                                 <Menu.Button className={"z-50"}><BsThreeDotsVertical /></Menu.Button>
-                                <Menu.Items className={"bg-[#40414f] absolute bottom-[155%] flex flex-col child:p-3"}>
+                                <Menu.Items className={"bg-[#40414f] absolute bottom-[155%] flex flex-col child:p-3 z-50"}>
                                     <Menu.Item>
-                                        {({ active }) => (
-                                            <button className={`-${active && "bg-[#5b5c65]"} hover:bg-[#5b5c65] whitespace-nowrap flex items-center justify-center gap-2`}><BsFillTrashFill /> Clear Chat</button>
+                                        {({ active }: { active: boolean }) => (
+                                            <button className={`-${active && "bg-[#5b5c65]"} hover:bg-[#5b5c65] whitespace-nowrap flex items-center justify-center gap-2`} onClick={() => setShowDialog(true)}><BsFillTrashFill /> Clear Chat</button>
                                         )}
                                     </Menu.Item>
                                     <Menu.Item>
-                                        {({ active }) => (
-                                            <button className={`-${active && "bg-[#5b5c65]"} hover:bg-[#5b5c65] whitespace-nowrap flex items-center justify-center gap-2`}><HiSwitchHorizontal /> Switch to mode {mode ? "Edite" : "Generate"}</button>
+                                        {({ active }: { active: boolean }) => (
+                                            <button onClick={() => setMode((prev) => !prev)} className={`-${active && "bg-[#5b5c65]"} hover:bg-[#5b5c65] whitespace-nowrap flex items-center justify-center gap-2`}><HiSwitchHorizontal /> Switch to mode {mode ? "Edite" : "Generate"}</button>
                                         )}
                                     </Menu.Item>
                                 </Menu.Items>
                             </Menu>
                         </div>
-
                     </div>
+                    <Transition.Root show={showDialog} as={Fragment}>
+                        <Dialog onClose={() => setShowDialog(false)} className={"relative z-50"}>
+                            <Transition.Child
+                                as={Fragment}
+                                enter="ease-out duration-300"
+                                enterFrom="opacity-0"
+                                enterTo="opacity-100"
+                                leave="ease-in duration-200"
+                                leaveFrom="opacity-100"
+                                leaveTo="opacity-0"
+                            >
+                                <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity w-[100vw] h-screen" />
+                            </Transition.Child>
+                            <Transition.Child as={Fragment} enter="transition-all duration-300" enterFrom="scale-0 opacity-0" enterTo="opacity-100 scale-100" leave="transition-all duration-300" leaveFrom="scale-100 opacity-100" leaveTo="scale-0 opacity-0">
+                                <Dialog.Panel className={"bg-[#40414f] fixed left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 max-w-[550px] rounded-lg shadow-md"}>
+                                    <div className="flex flex-col text-slate-300">
+                                        <div className="flex p-8 gap-3">
+                                            <div className="flex items-center justify-center text-2xl text-red-600 bg-red-200 rounded-full w-10 h-10">
+                                                <CgDanger />
+                                            </div>
+                                            <div className="flex flex-col gap-1">
+                                                <Dialog.Title className={"font-bold text-lg"}>Are you sure you want to do this?</Dialog.Title>
+                                                <Dialog.Description>You are going to loose all the photos you are generated.</Dialog.Description>
+                                            </div>
+                                        </div>
+                                        <div className=" bg-[#4d4e58] rounded-br-lg rounded-bl-lg px-3" >
+                                            <div className="flex items-center gap-5 justify-end py-4 w-full">
+                                                <button className="px-8 py-2 bg-red-600 font-bold rounded-lg" onClick={() => {
+                                                    setPrompts([])
+                                                    setShowDialog(false)
+                                                }}>I'm sure</button>
+                                                <button className="px-8 py-2 bg-[#36373b] border border-[#31323c] shadow-md font-bold rounded-lg" onClick={() => {
+                                                    setShowDialog(false)
+                                                }}>Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Dialog.Panel>
+                            </Transition.Child>
+                        </Dialog>
+                    </Transition.Root>
+
+
                 </div>
             </div>
         </div>
