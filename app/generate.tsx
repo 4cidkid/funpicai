@@ -1,17 +1,19 @@
 
-"use client";
+import { useState } from "react";
 import { BiBrush } from "react-icons/bi";
 import { LuImagePlus } from "react-icons/lu";
 import { PiPaperPlaneRightDuotone } from "react-icons/pi";
-import { BsThreeDotsVertical } from "react-icons/bs";
+import { BsThreeDotsVertical, BsFillTrashFill } from "react-icons/bs";
 import { RiAiGenerate } from "react-icons/ri";
+import { HiSwitchHorizontal } from "react-icons/hi"
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from "@/modules.css/generate.module.css"
 import type { GenerateProps, Prompts } from "@/types/types";
 import generateImage from "@/api/generateImage";
-
+import { Menu } from "@headlessui/react"
 export default function Generate({ prompts, setPrompts, mode, setMode, currentPrompt, setCurrentPrompt, setImage }: GenerateProps): JSX.Element {
+    const [showOptions, setShowOptions] = useState<boolean>(false)
     const handlePromptSubmit = async () => {
         if (currentPrompt.prompt.length === 0) return toast.error("Please enter a prompt!")
         setPrompts([...prompts, { promp: currentPrompt.prompt, index: prompts.length, response: false, responseImage: null, loadingPropmt: false }])
@@ -126,9 +128,24 @@ export default function Generate({ prompts, setPrompts, mode, setMode, currentPr
                             }} value={currentPrompt.prompt} type='text' className={`${currentPrompt.active ? "" : "cursor-not-allowed brightness-50"} bg-[#40414f] text-white p-2 rounded-xl shadow-md w-full`} placeholder='Enter a prompt to generate an image' />
                             <PiPaperPlaneRightDuotone className={`${currentPrompt.active ? "" : "cursor-not-allowed pointer-events-none"} absolute right-2 top-2/4 -translate-y-2/4 text-gray-300 z-10 cursor-pointer`} onClick={handlePromptSubmit} />
                         </div>
-                        <div className='text-2xl text-gray-300 cursor-pointer z-20'>
-                            <BsThreeDotsVertical />
+                        <div className="relative">
+                            <Menu>
+                                <Menu.Button className={"z-50"}><BsThreeDotsVertical /></Menu.Button>
+                                <Menu.Items className={"bg-[#40414f] absolute bottom-[155%] flex flex-col child:p-3"}>
+                                    <Menu.Item>
+                                        {({ active }) => (
+                                            <button className={`-${active && "bg-[#5b5c65]"} hover:bg-[#5b5c65] whitespace-nowrap flex items-center justify-center gap-2`}><BsFillTrashFill /> Clear Chat</button>
+                                        )}
+                                    </Menu.Item>
+                                    <Menu.Item>
+                                        {({ active }) => (
+                                            <button className={`-${active && "bg-[#5b5c65]"} hover:bg-[#5b5c65] whitespace-nowrap flex items-center justify-center gap-2`}><HiSwitchHorizontal /> Switch to mode {mode ? "Edite" : "Generate"}</button>
+                                        )}
+                                    </Menu.Item>
+                                </Menu.Items>
+                            </Menu>
                         </div>
+
                     </div>
                 </div>
             </div>
