@@ -9,10 +9,11 @@ import { BsThreeDotsVertical } from "react-icons/bs"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Generate from './generate';
-import type { Prompts, CurrentPrompt } from '@/types/types';
+import type { Prompts, CurrentPrompt,image } from '@/types/types';
+import Edit from './edit';
 export default function Home(): JSX.Element {
   const [mode, setMode] = useState<boolean>(false); // false = generate, true = edit
-  const [image, setImage] = useState<{ file: File | null, url: string }>({
+  const [image, setImage] = useState<image>({
     file: null,
     url: ""
   });
@@ -24,18 +25,14 @@ export default function Home(): JSX.Element {
 
 
 
-return (
-  <section className='bg-[#fafafa] w-full h-screen'>
-    <ToastContainer />
-    <div className='bg-[#343541] flex items-center justify-center h-screen w-full overflow-hidden'>
-      <div className={`${mode ? "w-[40%]" : " w-[0px]"} h-full text-white bg-[#202123] overflow-hidden`} style={{ transition: "width 700ms ease-in-out" }}>
-        <div className='w-full h-full flex items-center justify-center'>
-          <span>Start uploading an image!</span>
-        </div>
+  return (
+    <section className='bg-[#fafafa] w-full h-screen'>
+      <ToastContainer />
+      <div className='bg-[#343541] flex items-center justify-center h-screen w-full overflow-hidden'>
+        <Edit mode={mode} image={image} />
+        <Generate prompts={prompts} setPrompts={setPrompts} mode={mode} setMode={setMode} currentPrompt={currentPrompt} setCurrentPrompt={setCurrentPrompt} setImage={setImage} />
       </div>
-      <Generate prompts={prompts} setPrompts={setPrompts} mode={mode} setMode={setMode} currentPrompt={currentPrompt} setCurrentPrompt={setCurrentPrompt} setImage={setImage} />
-    </div>
-  </section>
+    </section>
 
-)
+  )
 }

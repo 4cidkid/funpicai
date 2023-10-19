@@ -16,10 +16,21 @@ const config: Config = {
     },
   },
   plugins: [
-    function ({ addVariant }:{addVariant:Function}) {
-        addVariant('child', '& > *');
-        addVariant('child-hover', '& > *:hover');
-    }
-],
+    function ({ addVariant }: { addVariant: Function }) {
+      addVariant('child', '& > *');
+      addVariant('child-hover', '& > *:hover');
+    },
+    function ({ addUtilities  }: { addUtilities: Function }) {
+      addUtilities({
+        ".drag-none": {
+          "-webkit-user-drag": "none",
+          "-khtml-user-drag": "none",
+          "-moz-user-drag": "none",
+          "-o-user-drag": "none",
+          "user-drag": "none"
+        }
+      })
+    },
+  ],
 }
 export default config
