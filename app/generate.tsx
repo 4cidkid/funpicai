@@ -146,12 +146,12 @@ export default function Generate({ prompts, setPrompts, mode, setMode, currentPr
                                 <Menu.Items className={"bg-[#40414f] absolute bottom-[155%] flex flex-col child:p-3 z-50"}>
                                     <Menu.Item>
                                         {({ active }: { active: boolean }) => (
-                                            <button className={`-${active && "bg-[#5b5c65]"} hover:bg-[#5b5c65] whitespace-nowrap flex items-center justify-center gap-2`} onClick={() => setShowDialog(true)}><BsFillTrashFill /> Clear Chat</button>
+                                            <button className={`${active && "bg-[#5b5c65]"} hover:bg-[#5b5c65] whitespace-nowrap flex items-center justify-center gap-2`} onClick={() => setShowDialog(true)}><BsFillTrashFill /> Clear Chat</button>
                                         )}
                                     </Menu.Item>
                                     <Menu.Item>
                                         {({ active }: { active: boolean }) => (
-                                            <button onClick={() => setMode((prev) => !prev)} className={`-${active && "bg-[#5b5c65]"} hover:bg-[#5b5c65] whitespace-nowrap flex items-center justify-center gap-2`}><HiSwitchHorizontal /> Switch to mode {mode ? "Edite" : "Generate"}</button>
+                                            <button onClick={() => setMode((prev) => !prev)} className={`${active && "bg-[#5b5c65]"} hover:bg-[#5b5c65] whitespace-nowrap flex items-center justify-center gap-2`}><HiSwitchHorizontal /> Switch to mode {mode ? "Edite" : "Generate"}</button>
                                         )}
                                     </Menu.Item>
                                 </Menu.Items>
