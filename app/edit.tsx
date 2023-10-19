@@ -1,4 +1,5 @@
 "use client";
+import Image from 'next/image';
 import { image } from '@/types/types';
 import { FaBrush } from 'react-icons/fa'
 import { useState, useRef, useEffect } from 'react'
@@ -69,10 +70,10 @@ export default function Edit({ mode, image }: { mode: boolean, image: image }): 
         <div className={`${mode ? "w-[40%]" : " w-[0px]"} h-full text-white bg-[#202123] overflow-hidden`} style={{ transition: "width 700ms ease-in-out" }}>
             <div className='w-full h-full flex items-center justify-center p-5'>
                 <div className='flex flex-col items-center justify-center relative w-full h-full'>
-                    <canvas width={1000} height={1000} className=' aspect-square z-50' ref={canvasRef}></canvas>
+                   {image.url && <canvas width={1000} height={1000} className=' aspect-square z-50' ref={canvasRef}></canvas>}
                     {!image.url ? <span className=' whitespace-nowrap' >Start uploading an image!</span> :
 
-                        <img className='drag-none w-[500px] h-[500px] absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 z-10' src={image.url} alt="" />
+                        <Image width={500} height={500} className='drag-none absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 z-10' src={image.url} alt="" ></Image>
 
                     }
 
