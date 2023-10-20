@@ -8,8 +8,9 @@ export type GenerateProps = {
     setMode: Dispatch<SetStateAction<boolean>>,
     currentPrompt: CurrentPrompt,
     setCurrentPrompt: Dispatch<SetStateAction<CurrentPrompt>>,
-    setImage: Dispatch<SetStateAction<image>>,
-    canvasRef: RefObject<HTMLCanvasElement>
+    setImageToEdit: Dispatch<SetStateAction<ImageToEdit>>,
+    canvasRef: RefObject<HTMLCanvasElement>,
+    imageToEdit:ImageToEdit
 }
 export type PrompBarProps = {
     prompts: Prompts,
@@ -17,19 +18,22 @@ export type PrompBarProps = {
     setPrompts: Dispatch<SetStateAction<Prompts>>,
     currentPrompt: CurrentPrompt,
     setCurrentPrompt: Dispatch<SetStateAction<CurrentPrompt>>,
-    setImage: Dispatch<SetStateAction<image>>,
+    setImageToEdit: Dispatch<SetStateAction<ImageToEdit>>,
     setMode: Dispatch<SetStateAction<boolean>>,
+    canvasRef: RefObject<HTMLCanvasElement>
+    imageToEdit:ImageToEdit
 }
 export type ModeProps = {
     prompts: Prompts,
     mode: boolean,
     setMode: Dispatch<SetStateAction<boolean>>,
+    
 }
 export type CurrentPrompt = {
     prompt: string,
     active: boolean,
 }
-export type image = {
+export type ImageToEdit = {
     file: File | null, url: string
 }
 export type OptionsModalProps = {

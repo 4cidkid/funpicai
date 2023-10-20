@@ -3,11 +3,11 @@ import { useState,useRef } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Generate from './generate';
-import type { Prompts, CurrentPrompt,image } from '@/types/types';
+import type { Prompts, CurrentPrompt,ImageToEdit } from '@/types/types';
 import Edit from './edit';
 export default function Home(): JSX.Element {
   const [mode, setMode] = useState<boolean>(false); // false = generate, true = edit
-  const [image, setImage] = useState<image>({
+  const [imageToEdit, setImageToEdit] = useState<ImageToEdit>({
     file: null,
     url: ""
   });
@@ -24,8 +24,8 @@ export default function Home(): JSX.Element {
     <section className='bg-[#fafafa] w-full h-screen'>
       <ToastContainer />
       <div className='bg-[#343541] flex items-center justify-center h-screen w-full overflow-hidden'>
-        <Edit mode={mode} image={image} canvasRef={canvasRef} />
-        <Generate  canvasRef={canvasRef} prompts={prompts} setPrompts={setPrompts} mode={mode} setMode={setMode} currentPrompt={currentPrompt} setCurrentPrompt={setCurrentPrompt} setImage={setImage} />
+        <Edit mode={mode} imageToEdit={imageToEdit} canvasRef={canvasRef} />
+        <Generate imageToEdit={imageToEdit}  canvasRef={canvasRef} prompts={prompts} setPrompts={setPrompts} mode={mode} setMode={setMode} currentPrompt={currentPrompt} setCurrentPrompt={setCurrentPrompt} setImageToEdit={setImageToEdit} />
       </div>
     </section>
 

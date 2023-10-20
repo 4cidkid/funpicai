@@ -13,7 +13,7 @@ import ClearChat from "@/modals/clearChat";
 import ApiKeyModal from "@/modals/apikey";
 import type { ShowNoApiKeyDialog } from "@/types/types"
 
-export default function PromptBar({ prompts, setPrompts, mode, setMode, currentPrompt, setCurrentPrompt, setImage }: PrompBarProps): JSX.Element {
+export default function PromptBar({ prompts, setPrompts, mode, setMode, currentPrompt, setCurrentPrompt, setImageToEdit, canvasRef, imageToEdit }: PrompBarProps): JSX.Element {
     const [showDialog, setShowDialog] = useState<boolean>(false)
     const apikeyCookie = useRef<string | undefined>(getCookie("api-key"))
     const [showNoApiKeyDialog, setShowNoApiKeyDialog] = useState<ShowNoApiKeyDialog>({
@@ -47,11 +47,21 @@ export default function PromptBar({ prompts, setPrompts, mode, setMode, currentP
         })
         setPrompts((prev) => {
             const newArray = [...prev]
-            newArray.push({ promp: "generating your " + currentPrompt.prompt + "....", index: prompts.length, response: true, responseImage: null, loadingPropmt: true })
+            newArray.push({ promp: !mode ? "generating your " : "Editing photo with prompt: " + currentPrompt.prompt + "....", index: prompts.length, response: true, responseImage: null, loadingPropmt: true })
             return newArray
         })
+        let data;
+        if (!mode) {
+            data = await generateImage(currentPrompt.prompt, apikeyCookie.current)
+        } else {
+            const editedImage = canvasRef.current?.toDataURL("image/png");
+            const originalImage = imageToEdit.file
+        }
 
-        const { isOk, image, message } = await generateImage(currentPrompt.prompt, apikeyCookie.current)
+        const isOk = data?.isOk
+        const message = data?.message
+        const image = data?.image ? data.image : null
+
         if (!isOk) {
             toast.error(message);
             setPrompts((prev: Prompts) => [...prev].slice(0, prev.length - 1));
@@ -62,7 +72,7 @@ export default function PromptBar({ prompts, setPrompts, mode, setMode, currentP
             var arrayToModify = [...prev];
             arrayToModify[arrayToModify.length - 1].promp = arrayToModify[arrayToModify.length - 1].promp.replace(
                 "generating your ",
-                "Here's your image of: "
+                !mode ? "Here's your image of: " : "Here's your edited image of: "
             );
             arrayToModify[arrayToModify.length - 1].responseImage = image;
             arrayToModify[arrayToModify.length - 1].loadingPropmt = false;
@@ -85,7 +95,7 @@ export default function PromptBar({ prompts, setPrompts, mode, setMode, currentP
                                 const file: File | null = e.target.files && e.target.files[0] ? e.target.files[0] : null;
                                 if (file) {
                                     const url = URL.createObjectURL(file);
-                                    setImage({ file: file, url: url });
+                                    setImageToEdit({ file: file, url: url });
                                 }
                             }}
                         />
