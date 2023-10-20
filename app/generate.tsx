@@ -36,7 +36,7 @@ export default function Generate({ prompts, setPrompts, mode, setMode, currentPr
                         {
                             prompts.map((prompt, index) => {
                                 return (
-                                    <ChatLabel prompt={prompt} index={index} tilt={styles.tilt} />
+                                    <ChatLabel key={index} prompt={prompt} index={index} tilt={styles.tilt} />
 
                                 )
                             })
