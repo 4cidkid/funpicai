@@ -75,7 +75,7 @@ export default function Edit({ mode, image }: { mode: boolean, image: image }): 
     });
   }, [image]);
   return (
-    <div className={`${mode ? "w-[40%]" : " w-[0px]"} h-full text-white bg-[#202123] overflow-hidden`} style={{ transition: "width 700ms ease-in-out" }}>
+    <div className={`${mode ? "w-[40%]" : " w-[0px]"} h-full text-white bg-[#202123] overflow-hidden relative z-[999]`} style={{ transition: "width 700ms ease-in-out" }}>
       <div className='w-full h-full flex items-center justify-center p-5'>
         <div className='flex flex-col items-center justify-center relative w-full h-full'>
           {
