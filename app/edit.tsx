@@ -31,16 +31,10 @@ export default function Edit({ mode, image }: { mode: boolean, image: image }): 
     if (!ctx) return;
 
     canvas.addEventListener("mousedown", (e) => {
-      console.log("mousedown");
       isDrawing = true;
-
-      const canvasStyle = getComputedStyle(canvas);
-      const paddingLeft = parseInt(canvasStyle.getPropertyValue("padding-left"));
-      const paddingTop = parseInt(canvasStyle.getPropertyValue("padding-top"));
-
       const boundingRect = canvas.getBoundingClientRect();
-      const offsetX = e.clientX - boundingRect.left - paddingLeft;
-      const offsetY = e.clientY - boundingRect.top - paddingTop;
+      const offsetX = e.clientX - boundingRect.left;
+      const offsetY = e.clientY - boundingRect.top;
 
       ctx.beginPath();
       ctx.moveTo(offsetX, offsetY);
@@ -48,19 +42,10 @@ export default function Edit({ mode, image }: { mode: boolean, image: image }): 
 
     canvas.addEventListener("mousemove", (e) => {
       if (!isDrawing) return;
-
-      const canvasStyle = getComputedStyle(canvas);
-      const paddingLeft = parseInt(canvasStyle.getPropertyValue("padding-left"));
-      const paddingTop = parseInt(canvasStyle.getPropertyValue("padding-top"));
-
       const boundingRect = canvas.getBoundingClientRect();
-      const offsetX = e.clientX - boundingRect.left - paddingLeft;
-      const offsetY = e.clientY - boundingRect.top - paddingTop;
 
-      const x = offsetX;
-      const y = offsetY;
-
-      console.log(x, y);
+      const x = e.clientX - boundingRect.left;
+      const y = e.clientY - boundingRect.top;
       drawCircle(x, y);
     });
 
@@ -86,7 +71,7 @@ export default function Edit({ mode, image }: { mode: boolean, image: image }): 
 
             <div className='w-full h-full drag-none absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4'>
               <Image width={500} height={500} className='drag-none absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 z-10' src={image.url} alt="" ></Image>
-              <button onClick={clearCanvas} className='absolute left-2/4 bottom-0 -translate-x-2/4 flex items-center justify-center gap-3 px-12 py-2 border-white border rounded-lg hover:bg-slate-600 transition-colors'><BsFillTrashFill/>Clear</button>
+              <button onClick={clearCanvas} className='absolute left-2/4 bottom-0 -translate-x-2/4 flex items-center justify-center gap-3 px-12 py-2 border-white border rounded-lg hover:bg-slate-600 transition-colors'><BsFillTrashFill />Clear</button>
             </div>
           </Transition>
 
