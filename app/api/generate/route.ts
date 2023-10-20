@@ -4,7 +4,7 @@ import { cookies } from "next/headers"
 import jwt from "jsonwebtoken"
 import { JwtPayload } from "jsonwebtoken";
 
-export async function POST(request: NextRequest, response: NextRequest) {
+export async function POST(request: NextRequest, response: NextResponse) {
     let data;
     try {
         data = await request.json()
