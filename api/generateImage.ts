@@ -1,4 +1,4 @@
-export default async function generateImage(prompt: string,token:string): Promise<{ isOk: boolean, image: string | null, message: string }> {
+export default async function generateImage(prompt: string,token:string): Promise<{ isOk: boolean, image: string | null, message: string | null }> {
   const response = await fetch("/api/generate", {
     method: "POST",
     body: JSON.stringify({

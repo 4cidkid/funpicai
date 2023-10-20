@@ -1,3 +1,4 @@
+
 export default async function getToken(apiKey: string): Promise<{ isOk: boolean, token: string | null, message: string | null }> {
     const response = await fetch("/api/set-key", {
         method: "POST",
