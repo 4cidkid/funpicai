@@ -36,3 +36,14 @@ export type OptionsModalProps = {
     setShowDialog: Dispatch<SetStateAction<boolean>>,
     setPrompts: Dispatch<SetStateAction<Prompts>>,
 }
+
+
+export type ShowNoApiKeyDialog = {
+    state:boolean,
+    action:boolean | null // true = user tried to submit a prompt without api key, false = user click on the button to setup api key
+}
+export type ApiKeyModalProps = {
+    showNoApiKeyDialog: ShowNoApiKeyDialog
+    setShowNoApiKeyDialog: Dispatch<SetStateAction<ShowNoApiKeyDialog>>,
+
+}
