@@ -5,7 +5,7 @@ export default async function getToken(apiKey: string): Promise<{ isOk: boolean,
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            apiKey: apiKey
+            apiKey
         })
     })
     let data;
