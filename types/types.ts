@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction,MutableRefObject } from 'react'
+import { Dispatch, SetStateAction,MutableRefObject,RefObject } from 'react'
 
 export type Prompts = { promp: string, index: number, response: boolean, responseImage: string | null, loadingPropmt: boolean }[]
 export type GenerateProps = {
@@ -9,6 +9,7 @@ export type GenerateProps = {
     currentPrompt: CurrentPrompt,
     setCurrentPrompt: Dispatch<SetStateAction<CurrentPrompt>>,
     setImage: Dispatch<SetStateAction<image>>,
+    canvasRef: RefObject<HTMLCanvasElement>
 }
 export type PrompBarProps = {
     prompts: Prompts,

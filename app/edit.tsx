@@ -2,11 +2,11 @@
 import Image from 'next/image';
 import { image } from '@/types/types';
 import { FaBrush } from 'react-icons/fa'
-import { useState, useRef, useEffect, Fragment } from 'react'
+import { useState, useRef, useEffect, Fragment, MutableRefObject, RefObject } from 'react'
 import { Transition } from '@headlessui/react';
 import { BsFillTrashFill } from "react-icons/bs"
-export default function Edit({ mode, image }: { mode: boolean, image: image }): JSX.Element {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
+export default function Edit({ mode, image, canvasRef }: { mode: boolean, image: image, canvasRef: RefObject<HTMLCanvasElement> }): JSX.Element {
+
   function clearCanvas() {
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d")

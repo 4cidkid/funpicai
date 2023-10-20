@@ -8,8 +8,7 @@ import PromptBar from "@/components/promptBar";
 import Mode from "@/components/mode";
 import ChatLabel from "@/components/chatLabel";
 import { Transition } from "@headlessui/react";
-export default function Generate({ prompts, setPrompts, mode, setMode, currentPrompt, setCurrentPrompt, setImage }: GenerateProps): JSX.Element {
-
+export default function Generate({ prompts, setPrompts, mode, setMode, currentPrompt, setCurrentPrompt, setImage,canvasRef }: GenerateProps): JSX.Element {
     return (
         <div className={`${mode ? "w-[60%] " : "w-full"} relative h-full flex justify-center`} style={{ transition: "width 700ms ease-in-out" }}>
             <Transition as={Fragment} show={!mode && prompts.length > 0} enter="transition-opacity duration-500"
