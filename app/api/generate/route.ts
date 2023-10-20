@@ -5,9 +5,9 @@ import jwt from "jsonwebtoken"
 import { JwtPayload } from "jsonwebtoken";
 
 export async function POST(request: NextRequest, response: NextRequest) {
-    let prompt;
+    let data;
     try {
-        prompt = await request.json()
+        data = await request.json()
     } catch (err) {
         return NextResponse.json({
             message: "Error getting prompt"
@@ -15,7 +15,8 @@ export async function POST(request: NextRequest, response: NextRequest) {
             status: 500
         })
     }
-    const apiKey = cookies().get("api-key") ? String(cookies().get("api-key")?.value) : null
+    const { prompt, token } = data;
+    const apiKey = token;
     if (!prompt) {
         return NextResponse.json({
             message: "Prompt was not provided"
@@ -41,6 +42,7 @@ export async function POST(request: NextRequest, response: NextRequest) {
         })
     }
     if (apiKeyDecoded && apiKeyDecoded.apiKey) {
+        console.log(apiKeyDecoded)
         const res = await fetch("https://api.openai.com/v1/images/generations", {
             method: "POST",
             headers: {
@@ -48,7 +50,7 @@ export async function POST(request: NextRequest, response: NextRequest) {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                prompt: prompt.prompt
+                prompt: prompt
             })
         })
         let data;
