@@ -4,18 +4,19 @@ import { LuImagePlus } from "react-icons/lu";
 import { PiPaperPlaneRightDuotone } from "react-icons/pi"
 import { BsThreeDotsVertical, BsFillTrashFill, BsFillKeyFill } from "react-icons/bs"
 import { HiSwitchHorizontal } from "react-icons/hi"
-import { PrompBarProps, Prompts } from "@/types/types"
+import type { PrompBarProps, Prompts, ShowNoApiKeyDialog } from "@/types/types"
 import generateImage from "@/api/generateImage";
 import { toast } from 'react-toastify';
 import styles from "@/modules.css/generate.module.css"
 import { getCookie } from "cookies-next";
 import ClearChat from "@/modals/clearChat";
 import ApiKeyModal from "@/modals/apikey";
-import type { ShowNoApiKeyDialog } from "@/types/types"
+import EditImage from "@/api/editImage";
 
 export default function PromptBar({ prompts, setPrompts, mode, setMode, currentPrompt, setCurrentPrompt, setImageToEdit, canvasRef, imageToEdit }: PrompBarProps): JSX.Element {
     const [showDialog, setShowDialog] = useState<boolean>(false)
     const apikeyCookie = useRef<string | undefined>(getCookie("api-key"))
+    console.log(apikeyCookie.current)
     const [showNoApiKeyDialog, setShowNoApiKeyDialog] = useState<ShowNoApiKeyDialog>({
         state: false,
         action: null
@@ -31,7 +32,7 @@ export default function PromptBar({ prompts, setPrompts, mode, setMode, currentP
             active: mode
         });
     }, [mode]);
-    const handlePromptSubmit = async () => {
+    const handlePromptSubmit = async (): Promise<void> => {
         if (!apikeyCookie.current) {
             setShowNoApiKeyDialog({
                 state: true,
@@ -39,7 +40,10 @@ export default function PromptBar({ prompts, setPrompts, mode, setMode, currentP
             })
             return;
         }
-        if (currentPrompt.prompt.length === 0) return toast.error("Please enter a prompt!")
+        if (currentPrompt.prompt.length === 0) {
+            toast.error("Please enter a prompt!")
+            return
+        }
         setPrompts([...prompts, { promp: currentPrompt.prompt, index: prompts.length, response: false, responseImage: null, loadingPropmt: false }])
         setCurrentPrompt({
             prompt: "",
@@ -54,8 +58,56 @@ export default function PromptBar({ prompts, setPrompts, mode, setMode, currentP
         if (!mode) {
             data = await generateImage(currentPrompt.prompt, apikeyCookie.current)
         } else {
-            const editedImage = canvasRef.current?.toDataURL("image/png");
+            const canvas = canvasRef?.current;
             const originalImage = imageToEdit.file
+            if (canvas && originalImage) {
+                const context = canvas.getContext("2d")
+                const imageData = context && context.getImageData(0, 0, canvas.width, canvas.height).data;
+                const isCanvasEmpty = imageData?.every((value, index) => {
+
+                    if (index % 4 === 3) {
+                        return value === 0;
+                    }
+                    return true;
+                });
+                if (isCanvasEmpty) {
+                    toast.error("The edit canvas can't be empty!")
+                    setPrompts((prev: Prompts) => [...prev].slice(0, prev.length - 1));
+                    setCurrentPrompt({ prompt: "", active: true });
+                    return;
+                }
+                try {
+                    const canvasImage: Blob = await new Promise((resolve, reject) => {
+                        return canvas.toBlob((blob) => {
+                            if (blob) {
+                                resolve(blob)
+                            } else {
+                                reject(new Error())
+                            }
+                        }, "image/png")
+                    })
+                    const formData = new FormData()
+                    if (canvasImage && imageToEdit.file) {
+                        formData.append("mask", canvasImage)
+                        formData.append("image", originalImage)
+                        formData.append("token", apikeyCookie.current)
+                        formData.append("prompt", currentPrompt.prompt)
+                        data = await EditImage(formData)
+                    } else {
+                        throw new Error("There was an error confirming the existence of canvasImage & imageToEdit")
+                    }
+
+                } catch (err) {
+                    toast.error("Error generating blob of canvas");
+                    return;
+                }
+
+            } else {
+                toast.error("We were unable to find the streaks on the canvas or the image")
+                setPrompts((prev: Prompts) => [...prev].slice(0, prev.length - 1));
+                setCurrentPrompt({ prompt: "", active: true });
+                return;
+            }
         }
 
         const isOk = data?.isOk
@@ -64,7 +116,12 @@ export default function PromptBar({ prompts, setPrompts, mode, setMode, currentP
 
         if (!isOk) {
             toast.error(message);
-            setPrompts((prev: Prompts) => [...prev].slice(0, prev.length - 1));
+            setPrompts((prev: Prompts) => {
+                const newPrompts = [...prev]
+                newPrompts[prev.length - 1].promp = message ?? "There was an error trying to " + !mode ? "generate" : "edit" + " the image";
+                newPrompts[prev.length - 1].loadingPropmt = false;
+                return newPrompts;
+            });
             setCurrentPrompt({ prompt: "", active: true });
             return;
         }
@@ -72,13 +129,13 @@ export default function PromptBar({ prompts, setPrompts, mode, setMode, currentP
             var arrayToModify = [...prev];
             arrayToModify[arrayToModify.length - 1].promp = arrayToModify[arrayToModify.length - 1].promp.replace(
                 "generating your ",
-                !mode ? "Here's your image of: " : "Here's your edited image of: "
+                !mode ? "Here's your image of: " : "Here's your edited image with the prompt: "
             );
             arrayToModify[arrayToModify.length - 1].responseImage = image;
             arrayToModify[arrayToModify.length - 1].loadingPropmt = false;
             return arrayToModify;
         });
-        setCurrentPrompt((prev) => ({ ...prev, prompt: "", active: true }));
+        setCurrentPrompt({ prompt: "", active: true });
     }
     return (
         <>
