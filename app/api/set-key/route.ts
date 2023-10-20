@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken"
-import { cookies } from "next/headers";
 
 export async function POST(request: NextRequest, response: NextResponse) {
     let apiKey: string;
@@ -30,8 +29,8 @@ export async function POST(request: NextRequest, response: NextResponse) {
             status: 500
         })
     }
-    cookies().set("api-key", token, { httpOnly: true, secure: process.env.NODE_ENV === "production" })
     return NextResponse.json({
+        token,
         message: "Api Key added successfully"
     }, {
         status: 200
