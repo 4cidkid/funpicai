@@ -8,7 +8,6 @@ import { toast } from "react-toastify";
 import { setCookie } from "cookies-next";
 export default function ApiKeyModal({ showNoApiKeyDialog, setShowNoApiKeyDialog }: ApiKeyModalProps): JSX.Element {
     const [apiKey, setApiKey] = useState<string>("")
-
     const submitButtonRef = useRef(null)
     async function handleApiKeySubmission(): Promise<void> {
         let loadingToken = toast.loading("Loading token....")
@@ -64,7 +63,7 @@ export default function ApiKeyModal({ showNoApiKeyDialog, setShowNoApiKeyDialog 
                                     <AiOutlineInfoCircle />
                                 </div>
                                 <div className="flex flex-col gap-1">
-                                    <Dialog.Title className={"font-bold text-lg"}>{showNoApiKeyDialog.action ? "You haven&#39;t setup your api key 😢!" : "Setup your open AI api key 😊"}</Dialog.Title>
+                                    <Dialog.Title className={"font-bold text-lg"}>{showNoApiKeyDialog.action ? "You haven't setup your api key 😢!" : "Setup your open AI api key 😊"}</Dialog.Title>
                                     <Dialog.Description>Please copy and paste your api key on the input below:</Dialog.Description>
                                     <input className="bg-[#4d4e58] border-[#ccc] shadow-md border my-2 py-1 pl-3 rounded-md" type="password" name="apikey" autoComplete="false" autoCapitalize="false"></input>
                                     <span className="text-sm mt-3">&#40;Don&#39;t worry, we don&#39;t store this information on our servers&#41;</span>
@@ -74,7 +73,7 @@ export default function ApiKeyModal({ showNoApiKeyDialog, setShowNoApiKeyDialog 
                                 <div className="flex items-center gap-5 justify-end py-4 w-full">
                                     <button ref={submitButtonRef} className="px-8 py-2 bg-green-600 font-bold rounded-lg" onClick={handleApiKeySubmission}>Save</button>
                                     <button className="px-8 py-2 bg-[#36373b] border border-[#31323c] shadow-md font-bold rounded-lg" onClick={() => {
-
+                                        setShowNoApiKeyDialog({ ...showNoApiKeyDialog, state: false })
                                     }}>Cancel</button>
                                 </div>
                             </div>
@@ -82,6 +81,6 @@ export default function ApiKeyModal({ showNoApiKeyDialog, setShowNoApiKeyDialog 
                     </Dialog.Panel>
                 </Transition.Child>
             </Dialog>
-        </Transition.Root>
+        </Transition.Root >
     )
 }
