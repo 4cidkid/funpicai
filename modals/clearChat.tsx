@@ -4,7 +4,7 @@ import { Transition, Dialog } from "@headlessui/react"
 import type { OptionsModalProps } from "@/types/types"
 import { CgDanger } from "react-icons/cg"
 
-export default function OptionsModal({ showDialog, setShowDialog, setPrompts }: OptionsModalProps) {
+export default function clearChat({ showDialog, setShowDialog, setPrompts }: OptionsModalProps) {
     const cancelButtonRef = useRef(null);
     return (
         <div>
