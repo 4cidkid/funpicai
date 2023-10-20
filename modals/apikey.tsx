@@ -10,7 +10,7 @@ export default function ApiKeyModal({ showNoApiKeyDialog, setShowNoApiKeyDialog,
     const [apiKey, setApiKey] = useState<string>("")
     const submitButtonRef = useRef(null)
     async function handleApiKeySubmission(): Promise<void> {
-        if(!apiKey){
+        if (!apiKey) {
             toast.error("You have to enter an api key");
             return;
         }
@@ -33,7 +33,9 @@ export default function ApiKeyModal({ showNoApiKeyDialog, setShowNoApiKeyDialog,
                 isLoading: false,
                 autoClose: 4000
             })
-            setCookie("api-key", token)
+            setCookie("api-key", token, {
+                maxAge: 21600
+            })
             apikeyCookie.current = token;
             setShowNoApiKeyDialog({
                 ...showNoApiKeyDialog,
@@ -79,8 +81,8 @@ export default function ApiKeyModal({ showNoApiKeyDialog, setShowNoApiKeyDialog,
                                 <div className="flex flex-col gap-1">
                                     <Dialog.Title className={"font-bold text-lg"}>{showNoApiKeyDialog.action ? "You haven't setup your api key 😢!" : "Setup your open AI api key 😊"}</Dialog.Title>
                                     <Dialog.Description>Please copy and paste your api key on the input below:</Dialog.Description>
-                                    <input onChange={(e:React.ChangeEvent<HTMLInputElement>) => setApiKey(e.target.value)} value={apiKey} className="bg-[#4d4e58] border-[#ccc] shadow-md border my-2 py-1 pl-3 rounded-md" type="password" name="apikey" autoComplete="false" autoCapitalize="false"></input>
-                                    <span className="text-sm mt-3">&#40;Don&#39;t worry, we don&#39;t store this information on our servers&#41;</span>
+                                    <input onChange={(e: React.ChangeEvent<HTMLInputElement>) => setApiKey(e.target.value)} value={apiKey} className="bg-[#4d4e58] border-[#ccc] shadow-md border my-2 py-1 pl-3 rounded-md" type="password" name="apikey" autoComplete="false" autoCapitalize="false"></input>
+                                    <span className="text-sm mt-3">&#40;Don&#39;t worry, we don&#39;t store this information on our servers and this token only last 6 hours&#41;</span>
                                 </div>
                             </div>
                             <div className=" bg-[#4d4e58] rounded-br-lg rounded-bl-lg px-3" >
