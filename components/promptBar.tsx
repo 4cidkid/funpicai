@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react"
+import React, { useState, useEffect, Fragment, useRef } from "react"
 import { Transition, Menu, Dialog } from "@headlessui/react";
 import { LuImagePlus } from "react-icons/lu";
 import { PiPaperPlaneRightDuotone } from "react-icons/pi"
@@ -15,6 +15,7 @@ import type { ShowNoApiKeyDialog } from "@/types/types"
 
 export default function PromptBar({ prompts, setPrompts, mode, setMode, currentPrompt, setCurrentPrompt, setImage }: PrompBarProps): JSX.Element {
     const [showDialog, setShowDialog] = useState<boolean>(false)
+    const apikeyCookie = useRef<string | undefined>(getCookie("api-key"))
     const [showNoApiKeyDialog, setShowNoApiKeyDialog] = useState<ShowNoApiKeyDialog>({
         state: false,
         action: null
@@ -25,12 +26,19 @@ export default function PromptBar({ prompts, setPrompts, mode, setMode, currentP
     })
 
     useEffect(() => {
-        !showIndicatorImage.active && setShowIndicatorImage({
+        setShowIndicatorImage({
             ...showIndicatorImage,
             active: mode
         });
     }, [mode]);
     const handlePromptSubmit = async () => {
+        if (!apikeyCookie.current) {
+            setShowNoApiKeyDialog({
+                state: true,
+                action: true
+            })
+            return;
+        }
         if (currentPrompt.prompt.length === 0) return toast.error("Please enter a prompt!")
         setPrompts([...prompts, { promp: currentPrompt.prompt, index: prompts.length, response: false, responseImage: null, loadingPropmt: false }])
         setCurrentPrompt({
@@ -39,11 +47,11 @@ export default function PromptBar({ prompts, setPrompts, mode, setMode, currentP
         })
         setPrompts((prev) => {
             const newArray = [...prev]
-            newArray.push({ promp: "generating your " + prompt + "....", index: prompts.length, response: true, responseImage: null, loadingPropmt: true })
+            newArray.push({ promp: "generating your " + currentPrompt.prompt + "....", index: prompts.length, response: true, responseImage: null, loadingPropmt: true })
             return newArray
         })
 
-        const { isOk, image, message } = await generateImage(currentPrompt.prompt)
+        const { isOk, image, message } = await generateImage(currentPrompt.prompt, apikeyCookie.current)
         if (!isOk) {
             toast.error(message);
             setPrompts((prev: Prompts) => [...prev].slice(0, prev.length - 1));
@@ -54,7 +62,7 @@ export default function PromptBar({ prompts, setPrompts, mode, setMode, currentP
             var arrayToModify = [...prev];
             arrayToModify[arrayToModify.length - 1].promp = arrayToModify[arrayToModify.length - 1].promp.replace(
                 "generating your ",
-                "Here's your prompt: "
+                "Here's your image of: "
             );
             arrayToModify[arrayToModify.length - 1].responseImage = image;
             arrayToModify[arrayToModify.length - 1].loadingPropmt = false;
@@ -106,7 +114,7 @@ export default function PromptBar({ prompts, setPrompts, mode, setMode, currentP
                                 </Menu.Item>
                                 <Menu.Item>
                                     {({ active }: { active: boolean }) => (
-                                        <button onClick={() => setMode((prev) => !prev)} className={`${active && "bg-[#5b5c65]"} hover:bg-[#5b5c65] whitespace-nowrap flex items-center justify-center gap-2`}><HiSwitchHorizontal /> Switch to mode {mode ? "Edite" : "Generate"}</button>
+                                        <button onClick={() => setMode((prev) => !prev)} className={`${active && "bg-[#5b5c65]"} hover:bg-[#5b5c65] whitespace-nowrap flex items-center justify-center gap-2`}><HiSwitchHorizontal /> Switch to mode {mode ? "Generate" : "Edit"}</button>
                                     )}
                                 </Menu.Item>
                                 <Menu.Item>
@@ -124,7 +132,7 @@ export default function PromptBar({ prompts, setPrompts, mode, setMode, currentP
                 <ClearChat showDialog={showDialog} setShowDialog={setShowDialog} setPrompts={setPrompts} />
 
             </div>
-            <ApiKeyModal setShowNoApiKeyDialog={setShowNoApiKeyDialog} showNoApiKeyDialog={showNoApiKeyDialog} />
+            <ApiKeyModal setShowNoApiKeyDialog={setShowNoApiKeyDialog} showNoApiKeyDialog={showNoApiKeyDialog} apikeyCookie={apikeyCookie} />
         </>
     )
 }

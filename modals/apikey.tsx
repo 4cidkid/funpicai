@@ -6,10 +6,14 @@ import { AiOutlineInfoCircle } from "react-icons/ai"
 import getToken from "@/api/getToken";
 import { toast } from "react-toastify";
 import { setCookie } from "cookies-next";
-export default function ApiKeyModal({ showNoApiKeyDialog, setShowNoApiKeyDialog }: ApiKeyModalProps): JSX.Element {
+export default function ApiKeyModal({ showNoApiKeyDialog, setShowNoApiKeyDialog, apikeyCookie }: ApiKeyModalProps): JSX.Element {
     const [apiKey, setApiKey] = useState<string>("")
     const submitButtonRef = useRef(null)
     async function handleApiKeySubmission(): Promise<void> {
+        if(!apiKey){
+            toast.error("You have to enter an api key");
+            return;
+        }
         let loadingToken = toast.loading("Loading token....")
         const { isOk, token, message } = await getToken(apiKey);
 
@@ -22,7 +26,7 @@ export default function ApiKeyModal({ showNoApiKeyDialog, setShowNoApiKeyDialog 
             })
 
             return;
-        } else {
+        } else if (token) {
             toast.update(loadingToken, {
                 render: "Token generated successfully",
                 type: "success",
@@ -30,10 +34,20 @@ export default function ApiKeyModal({ showNoApiKeyDialog, setShowNoApiKeyDialog 
                 autoClose: 4000
             })
             setCookie("api-key", token)
+            apikeyCookie.current = token;
             setShowNoApiKeyDialog({
                 ...showNoApiKeyDialog,
                 state: false
             })
+            return;
+        } else {
+            toast.update(loadingToken, {
+                render: "There was an error generating the token",
+                type: "error",
+                isLoading: false,
+                autoClose: 4000
+            })
+
             return;
         }
     }
@@ -65,7 +79,7 @@ export default function ApiKeyModal({ showNoApiKeyDialog, setShowNoApiKeyDialog 
                                 <div className="flex flex-col gap-1">
                                     <Dialog.Title className={"font-bold text-lg"}>{showNoApiKeyDialog.action ? "You haven't setup your api key 😢!" : "Setup your open AI api key 😊"}</Dialog.Title>
                                     <Dialog.Description>Please copy and paste your api key on the input below:</Dialog.Description>
-                                    <input className="bg-[#4d4e58] border-[#ccc] shadow-md border my-2 py-1 pl-3 rounded-md" type="password" name="apikey" autoComplete="false" autoCapitalize="false"></input>
+                                    <input onChange={(e:React.ChangeEvent<HTMLInputElement>) => setApiKey(e.target.value)} value={apiKey} className="bg-[#4d4e58] border-[#ccc] shadow-md border my-2 py-1 pl-3 rounded-md" type="password" name="apikey" autoComplete="false" autoCapitalize="false"></input>
                                     <span className="text-sm mt-3">&#40;Don&#39;t worry, we don&#39;t store this information on our servers&#41;</span>
                                 </div>
                             </div>
