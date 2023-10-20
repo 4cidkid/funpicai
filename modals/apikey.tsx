@@ -57,7 +57,7 @@ export default function ApiKeyModal({ showNoApiKeyDialog, setShowNoApiKeyDialog,
                 ...showNoApiKeyDialog,
                 state: false
 
-            })} className={"relative z-50"}>
+            })} className={"relative z-[100]"}>
                 <Transition.Child
                     as={Fragment}
                     enter="ease-out duration-300"
