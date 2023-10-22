@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction,MutableRefObject,RefObject } from 'react'
+import { Dispatch, SetStateAction, MutableRefObject, RefObject } from 'react'
 
 export type Prompts = { promp: string, index: number, response: boolean, responseImage: string | null, loadingPropmt: boolean }[]
 export type GenerateProps = {
@@ -10,7 +10,12 @@ export type GenerateProps = {
     setCurrentPrompt: Dispatch<SetStateAction<CurrentPrompt>>,
     setImageToEdit: Dispatch<SetStateAction<ImageToEdit>>,
     canvasRef: RefObject<HTMLCanvasElement>,
-    imageToEdit:ImageToEdit
+    imageToEdit: ImageToEdit,
+    switchImage: boolean,
+    setSwitchImage: Dispatch<SetStateAction<boolean>>
+}
+export type EditProps = {
+    mode: boolean, imageToEdit: ImageToEdit, canvasRef: RefObject<HTMLCanvasElement>, switchImage: boolean, setSwitchImage: Dispatch<SetStateAction<boolean>>
 }
 export type PrompBarProps = {
     prompts: Prompts,
@@ -21,13 +26,16 @@ export type PrompBarProps = {
     setImageToEdit: Dispatch<SetStateAction<ImageToEdit>>,
     setMode: Dispatch<SetStateAction<boolean>>,
     canvasRef: RefObject<HTMLCanvasElement>
-    imageToEdit:ImageToEdit
+    imageToEdit: ImageToEdit,
+    setSwitchImage: Dispatch<SetStateAction<boolean>>
+
 }
 export type ModeProps = {
     prompts: Prompts,
     mode: boolean,
     setMode: Dispatch<SetStateAction<boolean>>,
-    
+    setSwitchImage: Dispatch<SetStateAction<boolean>>
+
 }
 export type CurrentPrompt = {
     prompt: string,
