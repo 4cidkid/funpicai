@@ -1,6 +1,7 @@
 import Image from "next/image"
 import type { Prompts } from "@/types/types"
-export default function ChatLabel({ prompt, tilt,index }: { prompt: Prompts[0], tilt: string,index:number }): JSX.Element {
+import { BiDownload } from "react-icons/bi"
+export default function ChatLabel({ prompt, tilt }: { prompt: Prompts[0], tilt: string }): JSX.Element {
     return (
 
         <div className={`${prompt.response ? "bg-[#444654]" : ""} w-full`}>
@@ -13,7 +14,13 @@ export default function ChatLabel({ prompt, tilt,index }: { prompt: Prompts[0], 
                         {prompt.promp}
                     </p>
                     {
-                        prompt.responseImage ? <><br></br><Image width={208} height={208} className='w-52 h-52' src={prompt.responseImage} alt='response' /> </> : undefined
+                        prompt.responseImage ? <><br></br><div className="flex items-center gap-3">
+                            <Image width={208} height={208} className='w-52 h-52' src={prompt.responseImage} alt='response' />
+                            <a target="_blank" href={prompt.responseImage} className="flex items-center gap-2 text-white" download={true}>
+                                <BiDownload />
+                                <span>Download Image</span>
+                            </a>
+                        </div> </> : undefined
                     }
                 </div>
             </div>
