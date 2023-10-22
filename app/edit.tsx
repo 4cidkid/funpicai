@@ -1,11 +1,14 @@
 "use client";
 import Image from 'next/image';
-import { ImageToEdit } from '@/types/types';
+import { ImageToEdit, EditProps } from '@/types/types';
 import { FaBrush } from 'react-icons/fa'
 import { useState, useRef, useEffect, Fragment, MutableRefObject, RefObject } from 'react'
 import { Transition } from '@headlessui/react';
-import { BsFillTrashFill } from "react-icons/bs"
-export default function Edit({ mode, imageToEdit, canvasRef }: { mode: boolean, imageToEdit: ImageToEdit, canvasRef: RefObject<HTMLCanvasElement> }): JSX.Element {
+import { BsFillArrowLeftCircleFill, BsFillTrashFill } from "react-icons/bs"
+export default function Edit({ mode, imageToEdit, canvasRef, switchImage, setSwitchImage }: EditProps): JSX.Element {
+  const [windowWidth, setWindowWidth] = useState<number>(0);
+  const [widthOfCanvas, setWidthOfCanvas] = useState<number>(0);
+  const canvasImage = useRef<HTMLImageElement>(null);
 
   function clearCanvas() {
     const canvas = canvasRef.current;
@@ -29,7 +32,7 @@ export default function Edit({ mode, imageToEdit, canvasRef }: { mode: boolean, 
 
     if (!canvas) return;
     if (!ctx) return;
-
+    //pc mouse
     canvas.addEventListener("mousedown", (e) => {
       isDrawing = true;
       const boundingRect = canvas.getBoundingClientRect();
@@ -58,24 +61,58 @@ export default function Edit({ mode, imageToEdit, canvasRef }: { mode: boolean, 
       isDrawing = false;
       ctx.closePath();
     });
+    // mobile touch
+    canvas.addEventListener("touchstart", (e) => {
+      isDrawing = true;
+      const boundingRect = canvas.getBoundingClientRect();
+      const offsetX = e.touches[0].clientX - boundingRect.left;
+      const offsetY = e.touches[0].clientY - boundingRect.top;
+
+      ctx.beginPath();
+      ctx.moveTo(offsetX, offsetY);
+    });
+    canvas.addEventListener("touchmove", (e) => {
+      if (!isDrawing) return;
+      const boundingRect = canvas.getBoundingClientRect();
+
+      const x = e.touches[0].clientX - boundingRect.left;
+      const y = e.touches[0].clientY - boundingRect.top;
+      drawCircle(x, y);
+    });
+    canvas.addEventListener("touchend", () => {
+      isDrawing = false;
+      ctx.closePath();
+    });
+    canvas.addEventListener("touchcancel", () => {
+      isDrawing = false;
+      ctx.closePath();
+    });
+
   }, [imageToEdit]);
   return (
-    <div className={`${mode ? "w-[40%]" : " w-[0px]"} h-full text-white bg-[#202123] overflow-hidden relative z-50`} style={{ transition: "width 700ms ease-in-out" }}>
+    <div className={`${switchImage ? "max-md:-translate-x-0" : "max-md:-translate-x-full"} ${mode ? "md:w-[40%]" : "md:w-[0px]"} h-full text-white bg-[#202123] overflow-hidden relative z-50 max-md:fixed max-md:left-0 max-md:w-[50vw] max-md:z-[51]`} style={{ transition: window.innerWidth > 768 ? "width 700ms ease-in-out" : "transform 700ms ease-in-out" }}>
       <div className='w-full h-full flex items-center justify-center p-5'>
+        <div onClick={() => setSwitchImage(false)} className='absolute left-2/4 -translate-x-2/4 top-24 z-50'>
+          <BsFillArrowLeftCircleFill className="text-5xl" />
+        </div>
         <div className='flex flex-col items-center justify-center relative w-full h-full'>
           {
-            imageToEdit.url && <canvas width={500} height={500} className=' aspect-square z-50' ref={canvasRef}></canvas>
+            imageToEdit.url && <canvas width={widthOfCanvas} height={widthOfCanvas} className=' aspect-square z-50' ref={canvasRef}></canvas>
           }
           <Transition as={Fragment} show={imageToEdit.url && mode ? true : false} enter="transition-transform duration-300" enterFrom="scale-0" enterTo="scale-100" leave="transition-transform duration-300" leaveFrom="scale-100" leaveTo="scale-0">
 
 
             <div className='w-full h-full drag-none absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4'>
-              <Image width={500} height={500} className='drag-none absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 z-10' src={imageToEdit.url} alt="" ></Image>
+              <Image onLoad={() => {
+                if (canvasImage.current) {
+                  setWidthOfCanvas(canvasImage.current.clientWidth);
+                }
+              }} ref={canvasImage} id='image-canvas' width={400} height={400} className='drag-none absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 z-10' src={imageToEdit.url} alt="" ></Image>
               <button onClick={clearCanvas} className='absolute left-2/4 bottom-0 -translate-x-2/4 flex items-center justify-center gap-3 px-12 py-2 border-white border rounded-lg hover:bg-slate-600 transition-colors'><BsFillTrashFill />Clear</button>
             </div>
           </Transition>
 
-          {!imageToEdit.url && <span className=' whitespace-nowrap' >Start uploading an image!</span>}
+          {!imageToEdit.url && <span className=' whitespace-nowrap'>Start uploading an image!</span>}
 
         </div>
       </div>
