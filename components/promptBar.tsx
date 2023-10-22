@@ -172,7 +172,7 @@ export default function PromptBar({ prompts, setPrompts, mode, setMode, currentP
                     <div className="relative">
                         <Menu>
                             <Menu.Button className={"z-50"}><BsThreeDotsVertical /></Menu.Button>
-                            <Menu.Items className={"bg-[#40414f] absolute bottom-[155%] flex flex-col child:p-3 z-50"}>
+                            <Menu.Items className={"bg-[#40414f] absolute bottom-[155%] max-lg:right-0 flex flex-col child:p-3 z-50"}>
                                 <Menu.Item>
                                     {({ active }: { active: boolean }) => (
                                         <button className={`${active && "bg-[#5b5c65]"} hover:bg-[#5b5c65] whitespace-nowrap flex items-center justify-center gap-2`} onClick={() => setShowDialog(true)}><BsFillTrashFill /> Clear Chat</button>
