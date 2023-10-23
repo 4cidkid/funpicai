@@ -16,9 +16,11 @@ import EditImage from "@/api/editImage";
 export default function PromptBar({ prompts, setPrompts, mode, setMode, currentPrompt, setCurrentPrompt, setImageToEdit, canvasRef, imageToEdit, setSwitchImage }: PrompBarProps): JSX.Element {
     const [showDialog, setShowDialog] = useState<boolean>(false)
     const [windowWidth, setWindowWidth] = useState<number>(0);
-    if(typeof window !== "undefined"){
-        setWindowWidth(window.innerWidth);
-    }
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            setWindowWidth(window.innerWidth);
+        }
+    }, []);
     const apikeyCookie = useRef<string | undefined>(getCookie("api-key"))
     const [showNoApiKeyDialog, setShowNoApiKeyDialog] = useState<ShowNoApiKeyDialog>({
         state: false,

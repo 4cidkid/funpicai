@@ -9,9 +9,6 @@ export default function Edit({ mode, imageToEdit, canvasRef, switchImage, setSwi
   const [windowWidth, setWindowWidth] = useState<number>(0);
   const [widthOfCanvas, setWidthOfCanvas] = useState<number>(0);
   const canvasImage = useRef<HTMLImageElement>(null);
-  if(typeof window !== "undefined"){
-      setWindowWidth(window.innerWidth);
-  }
   function clearCanvas() {
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d")
@@ -90,7 +87,12 @@ export default function Edit({ mode, imageToEdit, canvasRef, switchImage, setSwi
       ctx.closePath();
     });
 
-  }, [canvasRef]);
+  }, [imageToEdit,canvasRef]);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setWindowWidth(window.innerWidth);
+    }
+  }, []);
   return (
     <div className={`${switchImage ? "max-md:-translate-x-0" : "max-md:-translate-x-full"} ${mode ? "md:w-[40%]" : "md:w-[0px]"} h-full text-white bg-[#202123] overflow-hidden relative z-50 max-md:fixed max-md:left-0 max-md:w-[50vw] max-md:z-[51]`} style={{ transition: windowWidth > 768 ? "width 700ms ease-in-out" : "transform 700ms ease-in-out" }}>
       <div className='w-full h-full flex items-center justify-center p-5'>
