@@ -13,7 +13,7 @@ import ClearChat from "@/modals/clearChat";
 import ApiKeyModal from "@/modals/apikey";
 import EditImage from "@/api/editImage";
 
-export default function PromptBar({ prompts, setPrompts, mode, setMode, currentPrompt, setCurrentPrompt, setImageToEdit, canvasRef, imageToEdit,setSwitchImage }: PrompBarProps): JSX.Element {
+export default function PromptBar({ prompts, setPrompts, mode, setMode, currentPrompt, setCurrentPrompt, setImageToEdit, canvasRef, imageToEdit, setSwitchImage }: PrompBarProps): JSX.Element {
     const [showDialog, setShowDialog] = useState<boolean>(false)
     const apikeyCookie = useRef<string | undefined>(getCookie("api-key"))
     const [showNoApiKeyDialog, setShowNoApiKeyDialog] = useState<ShowNoApiKeyDialog>({
@@ -26,10 +26,7 @@ export default function PromptBar({ prompts, setPrompts, mode, setMode, currentP
     })
 
     useEffect(() => {
-        setShowIndicatorImage({
-            ...showIndicatorImage,
-            active: mode
-        });
+        setShowIndicatorImage((prev) => ({ ...prev, active: true }));
     }, [mode]);
     const handlePromptSubmit = async (): Promise<void> => {
         if (!apikeyCookie.current) {
