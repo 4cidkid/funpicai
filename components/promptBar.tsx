@@ -15,6 +15,10 @@ import EditImage from "@/api/editImage";
 
 export default function PromptBar({ prompts, setPrompts, mode, setMode, currentPrompt, setCurrentPrompt, setImageToEdit, canvasRef, imageToEdit, setSwitchImage }: PrompBarProps): JSX.Element {
     const [showDialog, setShowDialog] = useState<boolean>(false)
+    const [windowWidth, setWindowWidth] = useState<number>(0);
+    if(typeof window !== "undefined"){
+        setWindowWidth(window.innerWidth);
+    }
     const apikeyCookie = useRef<string | undefined>(getCookie("api-key"))
     const [showNoApiKeyDialog, setShowNoApiKeyDialog] = useState<ShowNoApiKeyDialog>({
         state: false,
@@ -164,7 +168,7 @@ export default function PromptBar({ prompts, setPrompts, mode, setMode, currentP
                             if (e.key === "Enter") {
                                 handlePromptSubmit()
                             }
-                        }} value={currentPrompt.prompt} type='text' className={`${currentPrompt.active ? "" : "cursor-not-allowed brightness-50"} bg-[#40414f] text-white p-2 rounded-xl shadow-md w-full`} placeholder={`${mode && window.innerWidth > 405 ? "Enter a prompt to edit the image" : !mode && window.innerWidth > 403 ? "Enter a prompt to generate an image" : mode ? "Enter a prompt to edit" : "Enter a prompt to generate"}`} />
+                        }} value={currentPrompt.prompt} type='text' className={`${currentPrompt.active ? "" : "cursor-not-allowed brightness-50"} bg-[#40414f] text-white p-2 rounded-xl shadow-md w-full`} placeholder={`${mode && windowWidth > 405 ? "Enter a prompt to edit the image" : !mode && windowWidth > 403 ? "Enter a prompt to generate an image" : mode ? "Enter a prompt to edit" : "Enter a prompt to generate"}`} />
                         <PiPaperPlaneRightDuotone className={`${currentPrompt.active ? "" : "cursor-not-allowed pointer-events-none"} absolute right-2 top-2/4 -translate-y-2/4 text-gray-300 z-10 cursor-pointer`} onClick={handlePromptSubmit} />
                     </div>
                     <div className="relative">
