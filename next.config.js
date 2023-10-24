@@ -16,7 +16,10 @@ const nextConfig = {
             hostname:"oaidalleapiprodscus.blob.core.windows.net",
             port:""
         }]
-    }
+    },
+    generateBuildId: async () => {
+      return 'funpicai'
+    },
 }
 
 module.exports = nextConfig
