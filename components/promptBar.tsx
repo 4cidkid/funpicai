@@ -32,7 +32,7 @@ export default function PromptBar({ prompts, setPrompts, mode, setMode, currentP
     })
 
     useEffect(() => {
-        setShowIndicatorImage((prev) => ({ ...prev, active: true }));
+        setShowIndicatorImage((prev) => ({ ...prev, active: mode }));
     }, [mode]);
     const handlePromptSubmit = async (): Promise<void> => {
         if (!apikeyCookie.current) {
