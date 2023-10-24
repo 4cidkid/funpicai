@@ -1,8 +1,8 @@
 module.exports = {
     apps: [
       {
-        name: "my-app",
-        script: "next",
+        name: "funpicai",
+        script: "pnpm start",
         instances: 2,
       },
     ],
