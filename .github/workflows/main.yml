@@ -27,3 +27,4 @@ jobs:
             git status
             pnpm install
             pnpm run build
+            pm2 startOrRestart pm2.config.js
