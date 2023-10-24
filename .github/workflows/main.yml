@@ -22,11 +22,16 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: 22
           script: |
+           if [ -z "$SSH_AUTH_SOCK" ]; then
             eval "$(ssh-agent -s)"
             ssh-add ${{ secrets.PRIVATE_KEY }}
-            cd /root/funpicai
-            git pull origin main
-            git status
-            pnpm install
-            pnpm run build
-            pm2 startOrRestart pm2.config.js
+           fi
+           cd /root/funpicai
+           git pull origin main
+           git checkout main
+           git reset --hard origin/main
+           git pull origin main
+           git status
+           pnpm install
+           pnpm run build
+           pm2 startOrRestart pm2.config.js
