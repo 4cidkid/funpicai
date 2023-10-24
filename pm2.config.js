@@ -8,7 +8,7 @@ module.exports = {
             cwd: rootPath,
             script: 'node_modules/next/dist/bin/next',
             args: 'start',
-            instances: 0,
+            instances: 2,
             exec_mode: 'cluster',
             watch: false,
             merge_logs: true,
