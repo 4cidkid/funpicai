@@ -22,6 +22,8 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: 22
           script: |
+            eval "$(ssh-agent -s)"
+            ssh-add "${{ secrets.PRIVATE_KEY }}"
             cd /root/funpicai
             git pull origin main
             git status
