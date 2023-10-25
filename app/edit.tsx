@@ -4,8 +4,8 @@ import { ImageToEdit, EditProps } from '@/types/types';
 import { FaBrush } from 'react-icons/fa'
 import { useState, useRef, useEffect, Fragment, MutableRefObject, RefObject } from 'react'
 import { Transition } from '@headlessui/react';
-import { BsFillArrowLeftCircleFill, BsFillTrashFill } from "react-icons/bs"
-export default function Edit({ mode, imageToEdit, canvasRef, switchImage, setSwitchImage }: EditProps): JSX.Element {
+import { BsBrush, BsFillArrowLeftCircleFill, BsFillTrashFill } from "react-icons/bs"
+export default function Edit({ mode, imageToEdit, setImageToEdit, canvasRef, switchImage, setSwitchImage }: EditProps): JSX.Element {
   const [windowWidth, setWindowWidth] = useState<number>(0);
   const [widthOfCanvas, setWidthOfCanvas] = useState<number>(0);
   const canvasImage = useRef<HTMLImageElement>(null);
@@ -101,7 +101,7 @@ export default function Edit({ mode, imageToEdit, canvasRef, switchImage, setSwi
     }
   }, [switchImage, windowWidth])
   return (
-    <div className={`${switchImage ? "max-md:-translate-x-0" : "max-md:-translate-x-full"} ${mode ? "md:w-[40%]" : "md:w-[0px]"} h-full text-white bg-[#202123] overflow-hidden relative z-50 max-md:fixed max-md:top-0 max-md:h-screen max-md:left-0 max-md:w-[80dvw] max-md:z-[51]`} style={{ transition: windowWidth > 768 ? "width 700ms ease-in-out" : "transform 700ms ease-in-out" }}>
+    <div className={`${switchImage ? "max-md:-translate-x-0" : "max-md:-translate-x-full"} ${mode ? "md:w-[40%]" : "md:w-[0px]"} h-full text-white bg-[#202123] overflow-hidden relative z-50 max-md:fixed max-md:top-0 max-md:h-screen max-md:left-0 max-md:w-[90dvw] max-md:z-[51]`} style={{ transition: windowWidth > 768 ? "width 700ms ease-in-out" : "transform 700ms ease-in-out" }}>
       <div className='w-full h-full flex items-center justify-center p-5'>
         <div onClick={() => setSwitchImage(false)} className='md:hidden absolute left-2/4 -translate-x-2/4 top-24 z-50'>
           <BsFillArrowLeftCircleFill className="text-5xl" />
@@ -119,7 +119,10 @@ export default function Edit({ mode, imageToEdit, canvasRef, switchImage, setSwi
                   setWidthOfCanvas(canvasImage.current.clientWidth);
                 }
               }} ref={canvasImage} id='image-canvas' width={400} height={400} style={{ width: widthOfCanvas || 400, height: widthOfCanvas || 400 }} className='object-cover drag-none absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 z-10' src={imageToEdit.url} alt="" ></Image>
-              <button onClick={clearCanvas} className='absolute left-2/4 bottom-0 -translate-x-2/4 flex items-center justify-center gap-3 px-12 py-2 border-white border rounded-lg hover:bg-slate-600 transition-colors'><BsFillTrashFill />Clear</button>
+              <div className='w-full absolute left-2/4 bottom-12 -translate-x-2/4 flex flex-col child:w-full gap-2  justify-between '>
+                <button onClick={() => setImageToEdit({ file: null, url: "" })} className='flex items-center justify-center gap-3 px-8 py-2 border-white border rounded-lg hover:bg-slate-600 transition-colors'><BsFillTrashFill />Remove image</button>
+                <button onClick={clearCanvas} className='flex items-center justify-center gap-3 px-8 py-2 border-white border rounded-lg hover:bg-slate-600 transition-colors'><BsBrush />Clear Drawing</button>
+              </div>
             </div>
           </Transition>
 
