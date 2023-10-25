@@ -15,7 +15,8 @@ export type GenerateProps = {
     setSwitchImage: Dispatch<SetStateAction<boolean>>
 }
 export type EditProps = {
-    mode: boolean, imageToEdit: ImageToEdit, canvasRef: RefObject<HTMLCanvasElement>, switchImage: boolean, setSwitchImage: Dispatch<SetStateAction<boolean>>
+    mode: boolean, imageToEdit: ImageToEdit, setImageToEdit: Dispatch<SetStateAction<ImageToEdit>>
+    , canvasRef: RefObject<HTMLCanvasElement>, switchImage: boolean, setSwitchImage: Dispatch<SetStateAction<boolean>>
 }
 export type PrompBarProps = {
     prompts: Prompts,
