@@ -96,7 +96,7 @@ export default function Edit({ mode, imageToEdit, canvasRef, switchImage, setSwi
   useEffect(() => {
     if (windowWidth < 768 && switchImage) {
       document.body.style.overflow = "hidden";
-    }else{
+    } else {
       document.body.style.overflow = "auto";
     }
   }, [switchImage, windowWidth])
@@ -118,13 +118,17 @@ export default function Edit({ mode, imageToEdit, canvasRef, switchImage, setSwi
                 if (canvasImage.current) {
                   setWidthOfCanvas(canvasImage.current.clientWidth);
                 }
-              }} ref={canvasImage} id='image-canvas' width={400} height={400} style={{width:widthOfCanvas || 400, height:widthOfCanvas||400}} className='object-cover drag-none absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 z-10' src={imageToEdit.url} alt="" ></Image>
+              }} ref={canvasImage} id='image-canvas' width={400} height={400} style={{ width: widthOfCanvas || 400, height: widthOfCanvas || 400 }} className='object-cover drag-none absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 z-10' src={imageToEdit.url} alt="" ></Image>
               <button onClick={clearCanvas} className='absolute left-2/4 bottom-0 -translate-x-2/4 flex items-center justify-center gap-3 px-12 py-2 border-white border rounded-lg hover:bg-slate-600 transition-colors'><BsFillTrashFill />Clear</button>
             </div>
           </Transition>
 
-          {!imageToEdit.url && <span className=' whitespace-nowrap'>Start uploading an image!</span>}
-
+          {!imageToEdit.url && <div className='flex flex-col gap-2 items-center'>
+            <span className=' whitespace-nowrap'>Start uploading an image!</span>
+            <button className='px-12 py-2 border border-y-gray-100 rounded-xl font-semibold' onClick={() => mode && document.getElementById("add-image")?.click()}>
+              Upload an image
+            </button>
+          </div>}
         </div>
       </div>
     </div>
