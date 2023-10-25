@@ -72,11 +72,13 @@ export default function ApiKeyModal({ showNoApiKeyDialog, setShowNoApiKeyDialog,
                     <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity w-[100vw] h-screen" />
                 </Transition.Child>
                 <Transition.Child as={Fragment} enter="transition-all duration-300" enterFrom="scale-0 opacity-0" enterTo="opacity-100 scale-100" leave="transition-all duration-300" leaveFrom="scale-100 opacity-100" leaveTo="scale-0 opacity-0">
-                    <Dialog.Panel className={"bg-[#40414f] fixed left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 max-w-[550px] rounded-lg shadow-md"}>
+                    <Dialog.Panel className={"bg-[#40414f] fixed left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 w-3/4 max-w-[600px] min-w-[300px] rounded-lg shadow-md"}>
                         <div className="flex flex-col text-slate-300">
-                            <div className="flex p-8 gap-3">
-                                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-slate-600 text-2xl text-slate-100">
-                                    <AiOutlineInfoCircle />
+                            <div className="flex p-8">
+                                <div className="w-1/5 max-sm:hidden">
+                                    <div className="w-10 h-10 flex items-center justify-center rounded-full bg-slate-600 text-2xl text-slate-100">
+                                        <AiOutlineInfoCircle />
+                                    </div>
                                 </div>
                                 <div className="flex flex-col gap-1">
                                     <Dialog.Title className={"font-bold text-lg"}>{showNoApiKeyDialog.action ? "You haven't setup your api key 😢!" : "Setup your open AI api key 😊"}</Dialog.Title>
