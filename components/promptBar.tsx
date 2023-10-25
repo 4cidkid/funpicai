@@ -26,14 +26,6 @@ export default function PromptBar({ prompts, setPrompts, mode, setMode, currentP
         state: false,
         action: null
     });
-    const [showIndicatorImage, setShowIndicatorImage] = useState<{ active: boolean, stop: boolean }>({
-        active: false,
-        stop: false
-    })
-
-    useEffect(() => {
-        setShowIndicatorImage((prev) => ({ ...prev, active: mode }));
-    }, [mode]);
     const handlePromptSubmit = async (): Promise<void> => {
         if (!apikeyCookie.current) {
             setShowNoApiKeyDialog({
@@ -143,26 +135,7 @@ export default function PromptBar({ prompts, setPrompts, mode, setMode, currentP
         <>
             <div className=' z-10  absolute bottom-0 py-5 flex items-center justify-center text-white w-full'>
                 <div className='flex items-center justify-center gap-2 w-full'>
-                    <div className={`${mode ? "cursor-pointer" : "cursor-not-allowed"} text-2xl text-gray-300  z-20 relative`}>
-                        <LuImagePlus className="z-50" onClick={() => mode && document.getElementById("add-image")?.click()} />
-                        <input
-                            id='add-image'
-                            type="file"
-                            className="hidden"
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                setShowIndicatorImage({ active: false, stop: true })
-                                const file: File | null = e.target.files && e.target.files[0] ? e.target.files[0] : null;
-                                if (file) {
-                                    const url = URL.createObjectURL(file);
-                                    setImageToEdit({ file: file, url: url });
-                                    setSwitchImage(true)
-                                }
-                            }}
-                        />
-                        <Transition onClick={() => mode && document.getElementById("add-image")?.click()} className={"z-10"} show={showIndicatorImage.active && !showIndicatorImage.stop} enter="transition-opacity duration-150" enterFrom="opacity-0" enterTo="opacity-100" leave="transition-opacity duration-150" leaveFrom="opacity-100" leaveTo="opacity-0">
-                            <div className={`${styles["tilt-fast"]} z-10 w-12 h-12 border-green-500 border-2 rounded-full absolute left-2/4 top-2/4 -translate-y-2/4 -translate-x-2/4`}></div>
-                        </Transition>
-                    </div>
+
                     <div className='relative w-full max-w-[500px]'>
                         <input onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                             setCurrentPrompt({ ...currentPrompt, prompt: e.target.value })
