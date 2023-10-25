@@ -25,7 +25,7 @@ export default function Home(): JSX.Element {
     <section className='bg-[#fafafa] w-full h-screen'>
       <ToastContainer />
       <div className='bg-[#343541] flex items-center justify-center h-screen w-full overflow-hidden'>
-        <Edit setSwitchImage={setSwitchImage} switchImage={switchImage} mode={mode} imageToEdit={imageToEdit} canvasRef={canvasRef} />
+        <Edit setImageToEdit={setImageToEdit} setSwitchImage={setSwitchImage} switchImage={switchImage} mode={mode} imageToEdit={imageToEdit} canvasRef={canvasRef} />
         <Generate setSwitchImage={setSwitchImage} switchImage={switchImage} imageToEdit={imageToEdit}  canvasRef={canvasRef} prompts={prompts} setPrompts={setPrompts} mode={mode} setMode={setMode} currentPrompt={currentPrompt} setCurrentPrompt={setCurrentPrompt} setImageToEdit={setImageToEdit} />
       </div>
     </section>
