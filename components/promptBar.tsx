@@ -142,7 +142,7 @@ export default function PromptBar({ prompts, setPrompts, mode, setMode, currentP
     return (
         <>
             <div className=' z-10  absolute bottom-0 py-5 flex items-center justify-center text-white w-full'>
-                <div className='flex items-center justify-center gap-4 w-full'>
+                <div className='flex items-center justify-center gap-2 w-full'>
                     <div className={`${mode ? "cursor-pointer" : "cursor-not-allowed"} text-2xl text-gray-300  z-20 relative`}>
                         <LuImagePlus className="z-50" onClick={() => mode && document.getElementById("add-image")?.click()} />
                         <input
