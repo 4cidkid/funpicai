@@ -118,7 +118,7 @@ export default function Edit({ mode, imageToEdit, canvasRef, switchImage, setSwi
                 if (canvasImage.current) {
                   setWidthOfCanvas(canvasImage.current.clientWidth);
                 }
-              }} ref={canvasImage} id='image-canvas' width={400} height={400} className='drag-none absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 z-10' src={imageToEdit.url} alt="" ></Image>
+              }} ref={canvasImage} id='image-canvas' width={400} height={400} style={{width:widthOfCanvas || 400, height:widthOfCanvas||400}} className='object-cover drag-none absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 z-10' src={imageToEdit.url} alt="" ></Image>
               <button onClick={clearCanvas} className='absolute left-2/4 bottom-0 -translate-x-2/4 flex items-center justify-center gap-3 px-12 py-2 border-white border rounded-lg hover:bg-slate-600 transition-colors'><BsFillTrashFill />Clear</button>
             </div>
           </Transition>
