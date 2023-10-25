@@ -135,7 +135,19 @@ export default function PromptBar({ prompts, setPrompts, mode, setMode, currentP
         <>
             <div className=' z-10  absolute bottom-0 py-5 flex items-center justify-center text-white w-full'>
                 <div className='flex items-center justify-center gap-2 w-full'>
-
+                    <input
+                        id='add-image'
+                        type="file"
+                        className="hidden"
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            const file: File | null = e.target.files && e.target.files[0] ? e.target.files[0] : null;
+                            if (file) {
+                                const url = URL.createObjectURL(file);
+                                setImageToEdit({ file: file, url: url });
+                                setSwitchImage(true)
+                            }
+                        }}
+                    />
                     <div className='relative w-full max-w-[500px]'>
                         <input onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                             setCurrentPrompt({ ...currentPrompt, prompt: e.target.value })
