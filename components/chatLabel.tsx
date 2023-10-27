@@ -1,10 +1,19 @@
 import Image from "next/image"
 import type { Prompts } from "@/types/types"
 import { BiDownload } from "react-icons/bi"
+import { SyntheticEvent, useEffect, useRef } from "react"
 export default function ChatLabel({ prompt, tilt }: { prompt: Prompts[0], tilt: string }): JSX.Element {
+    const divRef = useRef<HTMLDivElement>(null)
+    useEffect(() => {
+        if(prompt.responseImage){
+            divRef.current?.scrollIntoView({behavior:"smooth"})
+        }
+    },[divRef.current,prompt.responseImage])
+   
     return (
-
-        <div className={`${prompt.response ? "bg-[#444654]" : ""} w-full`}>
+        <div ref={divRef} onLoad={() => {
+            divRef.current?.scrollIntoView({behavior:"smooth"})
+        }} className={`${prompt.response ? "bg-[#444654]" : ""} w-full`}>
             <div className={`flex items-start gap-4 w-[500px] h-fit py-4 mx-auto`}>
 
                 <Image width={50} height={50} className=' rounded-full' src={`${prompt.response ? "/bender.jpeg" : "/calamardo.png"} `} alt='user-icon' />
