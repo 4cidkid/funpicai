@@ -45,7 +45,7 @@ export default function PromptBar({ prompts, setPrompts, mode, setMode, currentP
         })
         setPrompts((prev) => {
             const newArray = [...prev]
-            newArray.push({ promp: !mode ? "generating your " : "Editing photo with prompt: " + currentPrompt.prompt + "....", index: prompts.length, response: true, responseImage: null, loadingPropmt: true })
+            newArray.push({ promp: !mode ? "generating your "+ currentPrompt.prompt  : "Editing photo with prompt: " + currentPrompt.prompt + "....", index: prompts.length, response: true, responseImage: null, loadingPropmt: true })
             return newArray
         })
         let data;
@@ -122,8 +122,8 @@ export default function PromptBar({ prompts, setPrompts, mode, setMode, currentP
         setPrompts((prev) => {
             var arrayToModify = [...prev];
             arrayToModify[arrayToModify.length - 1].promp = arrayToModify[arrayToModify.length - 1].promp.replace(
-                "generating your ",
-                !mode ? "Here's your image of: " : "Here's your edited image with the prompt: "
+                "generating your " + currentPrompt.prompt,
+                !mode ? "Here's your image of: "+ currentPrompt.prompt  : "Here's your edited image with the prompt: "+ currentPrompt.prompt 
             );
             arrayToModify[arrayToModify.length - 1].responseImage = image;
             arrayToModify[arrayToModify.length - 1].loadingPropmt = false;
