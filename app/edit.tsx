@@ -126,7 +126,7 @@ export default function Edit({ mode, imageToEdit, setImageToEdit, canvasRef, swi
             </div>
           </Transition>
 
-          {!imageToEdit.url && <div className='flex flex-col gap-2 items-center'>
+          {!imageToEdit.url && <div className='flex flex-col gap-2 items-center whitespace-nowrap'>
             <span className=' whitespace-nowrap'>Start uploading an image!</span>
             <button className='px-12 py-2 border border-y-gray-100 rounded-xl font-semibold' onClick={() => mode && document.getElementById("add-image")?.click()}>
               Upload an image
