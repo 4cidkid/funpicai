@@ -134,7 +134,7 @@ export default function PromptBar({ prompts, setPrompts, mode, setMode, currentP
     return (
         <>
             <div className=' z-10  absolute bottom-0 py-5 flex items-center justify-center text-white w-full'>
-                <div className='flex items-center justify-center gap-2 w-full'>
+                <div className='flex items-center justify-center gap-2 w-[80%] mx-auto'>
                     <input
                         id='add-image'
                         type="file"
