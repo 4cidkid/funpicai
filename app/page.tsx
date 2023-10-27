@@ -22,7 +22,7 @@ export default function Home(): JSX.Element {
 
 
   return (
-    <section className='bg-[#fafafa] w-full h-screen'>
+    <section className='bg-[#fafafa] w-full h-[100dvh]'>
       <ToastContainer />
       <div className='bg-[#343541] flex items-center justify-center h-screen w-full overflow-hidden'>
         <Edit setImageToEdit={setImageToEdit} setSwitchImage={setSwitchImage} switchImage={switchImage} mode={mode} imageToEdit={imageToEdit} canvasRef={canvasRef} />
