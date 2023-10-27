@@ -61,3 +61,10 @@ export type ApiKeyModalProps = {
     setShowNoApiKeyDialog: Dispatch<SetStateAction<ShowNoApiKeyDialog>>,
     apikeyCookie: MutableRefObject<string | undefined>
 }
+export type EditData = {
+    prompt: string;
+    mask: File;
+    image: File;
+    token: string;
+    get(key: string): string | File | null;
+}
