@@ -44,7 +44,7 @@ export default function TutorialModal() {
                         <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity w-[100vw] h-screen" />
                     </Transition.Child>
                     <Transition.Child as={Fragment} enter="transition-all duration-300" enterFrom="scale-0 opacity-0" enterTo="opacity-100 scale-100" leave="transition-all duration-300" leaveFrom="scale-100 opacity-100" leaveTo="scale-0 opacity-0">
-                        <Dialog.Panel className={"bg-[#40414f] fixed left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 w-2/4  min-w-[300px] rounded-lg shadow-md"}>
+                        <Dialog.Panel className={"bg-[#40414f] fixed left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 w-2/4  min-w-[320px] rounded-lg shadow-md"}>
                             <div className="flex flex-col text-slate-300">
                                 <div className="flex flex-col">
                                     <div className="w-full child:w-full flex items-center child:py-2 child:text-center child:cursor-pointer child:transition-colors child:duration-300">
@@ -58,13 +58,13 @@ export default function TutorialModal() {
                                         </button>
                                     </div>
                                     <div className="w-full flex items-center justify-center relative h-[520px] overflow-x-hidden">
-                                        <div className={`${!typeOfTutorial ? "-translate-x-2/4" : "-translate-x-[200%]"} flex items-center justify-center transition-transform duration-300 absolute left-2/4 top-2/4 -translate-y-2/4  w-[500px] aspect-square h-auto`}>
+                                        <div className={`${!typeOfTutorial ? "-translate-x-2/4" : "-translate-x-[200%]"} flex items-center justify-center transition-transform duration-300 absolute left-2/4 top-2/4 -translate-y-2/4  w-[500px] max-lg:w-[350px] max-sm:w-[320px]  aspect-square h-auto`}>
                                             {
                                                 !typeOfTutorial && videoLoading.generate && Loader
                                             }
                                             {!typeOfTutorial && <video onLoadedData={() => setVideoLoading({ ...videoLoading, generate: false })} className="w-full h-full object-cover" src="https://cdn.nicotordev.com/videos/80c26a50-460f-4f8d-aa9e-9b75579a5118.mp4" autoPlay={true} muted={true} loop={true} />}
                                         </div>
-                                        <div className={`${typeOfTutorial ? "-translate-x-2/4" : "translate-x-[200%]"} flex items-center justify-center transition-transform duration-300 absolute left-2/4 top-2/4 -translate-y-2/4  w-[500px] aspect-square h-auto`}>
+                                        <div className={`${typeOfTutorial ? "-translate-x-2/4" : "translate-x-[200%]"} flex items-center justify-center transition-transform duration-300 absolute left-2/4 top-2/4 -translate-y-2/4  w-[500px] max-lg:w-[350px] max-sm:w-[320px] aspect-square h-auto`}>
                                             {
                                                 typeOfTutorial && videoLoading.edit && Loader
                                             }
