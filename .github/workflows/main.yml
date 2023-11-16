@@ -33,5 +33,6 @@ jobs:
            git pull origin main
            git status
            pnpm install
+           pnpm rebuild
            pnpm run build
            pm2 startOrRestart pm2.config.js
